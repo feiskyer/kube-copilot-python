@@ -29,18 +29,7 @@ publish: build
 
 .PHONY: release-helm
 release-helm:
-	rm -f ./.cr-release-packages/kube-copilot-*.tgz
-	helm package ./helm/kube-copilot -d .cr-release-packages
-	git clone git@github.com:feiskyer/kube-copilot.git -b gh-pages .pages
-	cd .pages
-	helm repo index ../.cr-release-packages
-	helm repo index --merge index.yaml ../.cr-release-packages
-	cp ../.cr-release-packages/*.tgz .
-	cp ../.cr-release-packages/index.yaml .
-	git add .
-	git commit -am 'Update Helm releases'
-	git push origin gh-pages
-	cd .. && rm -rf .pages
+	hack/release.sh
 
 .PHONY: release
 release: versioning publish release-helm
