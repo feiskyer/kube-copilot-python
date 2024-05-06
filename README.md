@@ -70,7 +70,7 @@ pip install kube-copilot
 - Ensure [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) is installed on the local machine and the kubeconfig file is configured for Kubernetes cluster access.
 - Install [`trivy`](https://github.com/aquasecurity/trivy) to assess container image security issues (for the `audit` command).
 - Set the OpenAI [API key](https://platform.openai.com/account/api-keys) as the `OPENAI_API_KEY` environment variable to enable ChatGPT functionality.
-  - For [Azure OpenAI service](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/quickstart?tabs=command-line&pivots=rest-api#retrieve-key-and-endpoint), also set `OPENAI_API_TYPE=azure` and `OPENAI_API_BASE=https://<replace-this>.openai.azure.com/`.
+  - For [Azure OpenAI service](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/quickstart?tabs=command-line&pivots=rest-api#retrieve-key-and-endpoint), please set `AZURE_OPENAI_API_KEY=<your-key>` and `AZURE_OPENAI_ENDPOINT=https://<replace-this>.openai.azure.com/`.
 - Google search is disabled by default. To enable it, set `GOOGLE_API_KEY` and `GOOGLE_CSE_ID` (obtain from [here](https://cloud.google.com/docs/authentication/api-keys?visit_id=638154888929258210-4085587461) and [here](http://www.google.com/cse/)).
 
 ## How to use web UI
@@ -178,7 +178,7 @@ Options:
 
 ## Contribution
 
-The project is opensource at github [feiskyer/kube-copilot](https://github.com/feiskyer/kube-copilot) with Apache License.
+The project is opensource at github [feiskyer/kube-copilot-python](https://github.com/feiskyer/kube-copilot-python) with Apache License. The Go version of this project is maintained at [feiskyer/kube-copilot](https://github.com/feiskyer/kube-copilot) with same license.
 
 If you would like to contribute to the project, please follow these guidelines:
 
