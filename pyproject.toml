@@ -29,7 +29,7 @@ langchain-community = "^0.0.36"
 langchain-openai = "^0.1.6"
 
 [tool.poetry.group.dev.dependencies]
-httpx = {extras = ["socks"], version = "^0.26.0"}
+httpx = {extras = ["socks"], version = ">=0.26,<0.28"}
 
 [build-system]
 requires = ["poetry-core"]
