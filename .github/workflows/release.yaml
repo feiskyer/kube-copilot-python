@@ -26,5 +26,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker image
         run: |
-          docker build -t ${{ env.REGISTRY }}/${{ github.repository_owner }}/kube-copilot:${{ github.ref_name }} .
-          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/kube-copilot:${{ github.ref_name }}
+          docker build -t ${{ env.REGISTRY }}/${{ github.repository_owner }}/kube-copilot-python:${{ github.ref_name }} .
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/kube-copilot-python:${{ github.ref_name }}
