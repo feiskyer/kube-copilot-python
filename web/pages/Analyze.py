@@ -6,7 +6,7 @@ import sys
 import streamlit as st
 from langchain_community.callbacks.streamlit.streamlit_callback_handler import StreamlitCallbackHandler
 
-from kube_copilot.chains import ReActLLM
+from kube_copilot.agent import ReActLLM
 from kube_copilot.prompts import get_analyze_prompt
 from kube_copilot.labeler import CustomLLMThoughtLabeler
 
@@ -61,8 +61,7 @@ if st.button("Analyze"):
     st_cb = StreamlitCallbackHandler(st.container(), thought_labeler=CustomLLMThoughtLabeler())
     chain = ReActLLM(model=model,
                      verbose=True,
-                     enable_python=True,
-                     auto_approve=True)
+                     enable_python=Truee)
 
     response = chain.run(prompt, callbacks=[st_cb])
     st.markdown(response)

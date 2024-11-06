@@ -7,7 +7,7 @@ import streamlit as st
 import yaml
 from langchain_community.callbacks.streamlit.streamlit_callback_handler import StreamlitCallbackHandler
 
-from kube_copilot.chains import ReActLLM
+from kube_copilot.agent import ReActLLM
 from kube_copilot.prompts import get_generate_prompt
 from kube_copilot.shell import KubeProcess
 from kube_copilot.labeler import CustomLLMThoughtLabeler
@@ -57,8 +57,7 @@ if st.button("Generate", key="generate"):
     st_cb = StreamlitCallbackHandler(st.container(), thought_labeler=CustomLLMThoughtLabeler())
     chain = ReActLLM(model=model,
                      verbose=True,
-                     enable_python=True,
-                     auto_approve=True)
+                     enable_python=True)
     response = chain.run(get_generate_prompt(prompt), callbacks=[st_cb])
     st.session_state["response"] = response
 

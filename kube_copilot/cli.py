@@ -3,7 +3,7 @@
 import logging
 import sys
 import click
-from kube_copilot.chains import ReActLLM
+from kube_copilot.agent import ReActLLM
 from kube_copilot.shell import KubeProcess
 from kube_copilot.prompts import (
     get_prompt,
@@ -21,8 +21,8 @@ logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 cmd_options = [
     click.option("--verbose", is_flag=True, default=False,
                  help="Enable verbose information of copilot execution steps"),
-    click.option("--model", default="gpt-4",
-                 help="OpenAI model to use for copilot execution, default is gpt-4"),
+    click.option("--model", default="gpt-4o",
+                 help="OpenAI model to use for copilot execution, default is gpt-4o"),
 ]
 
 
@@ -57,7 +57,6 @@ def execute(instructions, verbose, model):
 @add_options(cmd_options)
 def diagnose(namespace, pod, verbose, model):
     '''Diagnose problems for a Pod'''
-    # chain = PlanAndExecuteLLM(verbose=verbose, model=model, enable_python=True)
     chain = ReActLLM(verbose=verbose, model=model, enable_python=True)
     result = chain.run(get_diagnose_prompt(namespace, pod))
     print(result)

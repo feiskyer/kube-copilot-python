@@ -13,7 +13,7 @@ class KubeProcess():
         self.return_err_output = return_err_output
         self.command = command
         self.max_tokens = max_tokens
-        self.encoding = tiktoken.encoding_for_model("gpt-3.5-turbo-0301")
+        self.encoding = tiktoken.encoding_for_model("gpt-4")
 
     def run(self, args: Union[str, List[str]], input=None) -> str:
         '''Run the command.'''

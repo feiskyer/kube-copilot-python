@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from langchain_community.callbacks.streamlit.streamlit_callback_handler import ToolRecord
 from langchain_community.callbacks.streamlit.streamlit_callback_handler import LLMThoughtLabeler
 

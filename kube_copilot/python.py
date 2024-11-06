@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Dict, Optional, Type
+from typing import Any, Optional, ClassVar
 import tiktoken
-from langchain_experimental.tools import PythonREPLTool
-from langchain.callbacks.manager import (
-    AsyncCallbackManagerForToolRun,
-    CallbackManagerForToolRun,
-)
+
+from langchain_experimental.tools.python.tool import PythonREPLTool
+from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackManagerForToolRun
+
 
 class PythonTool(PythonREPLTool):
 
-    max_tokens = 2000
-    model = "gpt-4"
+    max_tokens: ClassVar[int] = 2000
+    model: ClassVar[str] = "gpt-4"
 
     def trunk_tokens(self, msg):
         # TODO: workarounds for the following context length error with ChatGPT
