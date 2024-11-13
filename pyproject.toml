@@ -31,7 +31,7 @@ langchain-google-community = "^2.0.2"
 langchain = "^0.3"
 
 [tool.poetry.group.dev.dependencies]
-httpx = {extras = ["socks"], version = "^0.26.0"}
+httpx = {extras = ["socks"], version = ">=0.26,<0.28"}
 
 [build-system]
 requires = ["poetry-core"]
