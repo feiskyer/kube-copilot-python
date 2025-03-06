@@ -6,12 +6,10 @@ from langchain_core.tools import tool
 
 # from langchain_community.callbacks import HumanApprovalCallbackHandler
 from langchain_google_community import GoogleSearchAPIWrapper
-
 from langchain_openai import AzureChatOpenAI, ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 
-from kube_copilot.output import ChatOutputParser
 from kube_copilot.python import PythonTool
 from kube_copilot.shell import KubeProcess
 
@@ -173,6 +171,7 @@ def python_approval(_input: str) -> bool:
     reset_color = "\033[0m"
     msg = "\nGenerated Python code:\n```\n" + _input + "\n```\n"
     msg += f"{red_color}Do you approve to execute the above Python code? (Y/Yes){
-        reset_color}"
+        reset_color
+    }"
     resp = input(msg)
     return resp.lower().strip() in ("yes", "y", "")

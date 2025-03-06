@@ -13,7 +13,7 @@ keywords = ["kubernetes", "copilot", "openai", "chatgpt", "ai", "agentic"]
 kube-copilot = 'kube_copilot.cli:main'
 
 [tool.poetry.dependencies]
-python = ">=3.11,<4"
+python = ">=3.12,<4"
 requests = "^2.32.3"
 openai = "^1.54.4"
 tiktoken = "^0.9.0"
@@ -23,12 +23,10 @@ google-api-python-client = ">=2.152.0"
 click = "^8.1.7"
 kubernetes = ">=31.0.0"
 streamlit = "^1.40.1"
-langgraph = "^0.3.0"
-langchain-openai = "^0.3.0"
-langchain-experimental = "^0.3"
-langchain-community = "^0.3"
-langchain-google-community = "^2.0.2"
-langchain = "^0.3"
+langgraph = "^0.3.5"
+langchain-openai = "^0.3.7"
+langchain-google-community = "^2.0.7"
+langchain-experimental = "^0.3.4"
 
 [tool.poetry.group.dev.dependencies]
 httpx = {extras = ["socks"], version = "0.28.1"}

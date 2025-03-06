@@ -1,5 +1,5 @@
 # Builder image
-FROM python:3.11-bullseye AS builder
+FROM python:3.12-bullseye AS builder
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
@@ -11,7 +11,7 @@ RUN /root/.local/bin/poetry install && /root/.local/bin/poetry build && \
 
 
 # Final image
-FROM python:3.11-bullseye
+FROM python:3.12-bullseye
 
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     chmod +x kubectl && mv kubectl /usr/local/bin/kubectl && \
