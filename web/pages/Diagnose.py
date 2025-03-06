@@ -4,11 +4,13 @@ import os
 import sys
 
 import streamlit as st
-from langchain_community.callbacks.streamlit.streamlit_callback_handler import StreamlitCallbackHandler
 
 from kube_copilot.agent import ReActLLM
-from kube_copilot.prompts import get_diagnose_prompt
 from kube_copilot.labeler import CustomLLMThoughtLabeler
+from kube_copilot.prompts import get_diagnose_prompt
+from langchain_community.callbacks.streamlit.streamlit_callback_handler import (
+    StreamlitCallbackHandler,
+)
 
 logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
@@ -18,23 +20,42 @@ st.set_page_config(page_title="Diagnose problems for Pod", page_icon="💬")
 st.title("💬 Diagnose problems for Pod")
 
 with st.sidebar:
-    model = st.text_input("OpenAI Model",
-                          key="openai_api_model", value=os.getenv("OPENAI_API_MODEL", "gpt-4"))
+    model = st.text_input(
+        "OpenAI Model",
+        key="openai_api_model",
+        value=os.getenv("OPENAI_API_MODEL", "gpt-4"),
+    )
 
     if not os.getenv("OPENAI_API_KEY", ""):
         # show the setting panel if the API key is not set from environment variable
         openai_api_key = st.text_input(
-            "OpenAI API key", key="openai_api_key", type="password", value=os.getenv("OPENAI_API_KEY", ""))
-        openai_api_base = st.text_input("OpenAI API base URL", key="openai_api_base", value=os.getenv(
-            "OPENAI_API_BASE", "https://api.openai.com/v1"))
+            "OpenAI API key",
+            key="openai_api_key",
+            type="password",
+            value=os.getenv("OPENAI_API_KEY", ""),
+        )
+        openai_api_base = st.text_input(
+            "OpenAI API base URL",
+            key="openai_api_base",
+            value=os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1"),
+        )
         google_api_key = st.text_input(
-            "Google API key", key="google_api_key", type="password", value=os.getenv("GOOGLE_API_KEY", ""))
+            "Google API key",
+            key="google_api_key",
+            type="password",
+            value=os.getenv("GOOGLE_API_KEY", ""),
+        )
         google_cse_id = st.text_input(
-            "Google CSE ID", key="google_cse_id", type="password", value=os.getenv("GOOGLE_CSE_ID", ""))
+            "Google CSE ID",
+            key="google_cse_id",
+            type="password",
+            value=os.getenv("GOOGLE_CSE_ID", ""),
+        )
 
 
-namespace = st.text_input("Namespace", key="namespace",
-                          placeholder="default", value="default")
+namespace = st.text_input(
+    "Namespace", key="namespace", placeholder="default", value="default"
+)
 pod = st.text_input("Pod", key="pod", placeholder="nginx")
 
 
@@ -49,15 +70,14 @@ if st.button("Diagnose"):
         os.environ["GOOGLE_API_KEY"] = google_api_key
         os.environ["GOOGLE_CSE_ID"] = google_cse_id
 
-
     if not namespace or not pod:
         st.info("Please add your namespace and pod to continue.")
         st.stop()
 
     prompt = get_diagnose_prompt(namespace, pod)
-    st_cb = StreamlitCallbackHandler(st.container(), thought_labeler=CustomLLMThoughtLabeler())
-    chain = ReActLLM(model=model,
-                     verbose=True,
-                     enable_python=True)
+    st_cb = StreamlitCallbackHandler(
+        st.container(), thought_labeler=CustomLLMThoughtLabeler()
+    )
+    chain = ReActLLM(model=model, verbose=True, enable_python=True)
     response = chain.run(prompt, callbacks=[st_cb])
     st.markdown(response)
