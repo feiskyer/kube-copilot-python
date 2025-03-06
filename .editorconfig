@@ -1,0 +1,26 @@
+# EditorConfig is awesome: https://editorconfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# YAML files
+[*.{yaml,yml}]
+indent_style = space
+indent_size = 2
+
+# TOML files
+[*.toml]
+indent_style = space
+indent_size = 2
+
+# Python files
+[*.py]
+indent_style = space
+indent_size = 4
+
+# JSON files
+[*.json]
+indent_style = space
+indent_size = 2
+
+# Add more file types and their configurations as needed
