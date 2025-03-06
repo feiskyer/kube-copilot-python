@@ -27,6 +27,7 @@ langgraph = "^0.3.5"
 langchain-openai = "^0.3.7"
 langchain-google-community = "^2.0.7"
 langchain-experimental = "^0.3.4"
+python-dotenv = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 httpx = {extras = ["socks"], version = "0.28.1"}
