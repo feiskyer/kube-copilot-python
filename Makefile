@@ -8,3 +8,6 @@ export-pip:
 
 create-venv:
 	python -n virtualenv .venv
+
+fmt:
+	ufmt format .
