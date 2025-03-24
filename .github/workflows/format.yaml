@@ -29,5 +29,5 @@ jobs:
       - uses: omnilib/ufmt@action-v1
         with:
           path: .
-          requirements: requirements-fmt.txt
+          requirements: requirements.txt
           python-version: "3.x"
