@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Optional, ClassVar
+from typing import Any, ClassVar, Optional
+
 import tiktoken
+from langchain_core.callbacks import (
+    AsyncCallbackManagerForToolRun,
+    CallbackManagerForToolRun,
+)
 
 from langchain_experimental.tools.python.tool import PythonREPLTool
-from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackManagerForToolRun
 
 
 class PythonTool(PythonREPLTool):
@@ -17,7 +21,7 @@ class PythonTool(PythonREPLTool):
         #   https://github.com/hwchase17/langchain/issues/1767
         tokens = tiktoken.encoding_for_model(self.model).encode(msg)
         while len(tokens) > self.max_tokens:
-            msg = msg[:len(msg) // 2]
+            msg = msg[: len(msg) // 2]
             tokens = tiktoken.encoding_for_model(self.model).encode(msg)
         return msg
 

@@ -4,14 +4,22 @@ import os
 
 
 def get_kubeconfig():
-    '''Get kubeconfig for the current Pod.'''
-    token = open("/run/secrets/kubernetes.io/serviceaccount/token", "r", encoding="utf-8").read().strip()  # Strip newline characters
-    cert = open("/run/secrets/kubernetes.io/serviceaccount/ca.crt", "r", encoding="utf-8").read().strip()  # Strip newline characters
+    """Get kubeconfig for the current Pod."""
+    token = (
+        open("/run/secrets/kubernetes.io/serviceaccount/token", "r", encoding="utf-8")
+        .read()
+        .strip()
+    )  # Strip newline characters
+    cert = (
+        open("/run/secrets/kubernetes.io/serviceaccount/ca.crt", "r", encoding="utf-8")
+        .read()
+        .strip()
+    )  # Strip newline characters
     cert = base64.b64encode(cert.encode()).decode()
     host = os.environ.get("KUBERNETES_SERVICE_HOST")
     port = os.environ.get("KUBERNETES_SERVICE_PORT")
 
-    return f'''apiVersion: v1
+    return f"""apiVersion: v1
 clusters:
 - cluster:
     certificate-authority-data: {cert}
@@ -28,11 +36,11 @@ users:
 - name: kube
   user:
     token: {token}
-'''
+"""
 
 
 def setup_kubeconfig():
-    '''Set up kubeconfig if running inside a Pod.'''
+    """Set up kubeconfig if running inside a Pod."""
     if not os.getenv("KUBERNETES_SERVICE_HOST"):
         # Not running inside a Pod, so no need to set up kubeconfig
         return
@@ -43,12 +51,12 @@ def setup_kubeconfig():
 
     # If kubeconfig already exists, no need to recreate it
     if os.path.exists(kubeconfig_file):
-       return
+        return
 
     os.makedirs(kubeconfig_path, exist_ok=True)
     kubeconfig = get_kubeconfig()
     with open(kubeconfig_file, "w", encoding="utf-8") as f:
-      f.write(kubeconfig)
+        f.write(kubeconfig)
 
 
 # Call the setup_kubeconfig function to set up kubeconfig if needed

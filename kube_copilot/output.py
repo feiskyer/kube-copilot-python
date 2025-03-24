@@ -17,17 +17,17 @@ class ChatOutputParser(AgentOutputParser):
         includes_answer = FINAL_ANSWER_ACTION in text
         try:
             action = text.split("```")[1].strip()
-            if action.startswith('python\n'):
+            if action.startswith("python\n"):
                 # Ensure the Python code snippets are handled by the Python action.
                 response = {
                     "action": "python",
-                    "action_input": action.split('python\n')[1],
+                    "action_input": action.split("python\n")[1],
                 }
-            elif action.startswith('sh\n') or action.startswith('bash\n'):
+            elif action.startswith("sh\n") or action.startswith("bash\n"):
                 # Ensure the shell code snippets are handled by the kubectl action.
                 response = {
                     "action": "kubectl",
-                    "action_input": action.split('sh\n')[1],
+                    "action_input": action.split("sh\n")[1],
                 }
             else:
                 # JSON object is expected by default.
@@ -43,7 +43,9 @@ class ChatOutputParser(AgentOutputParser):
 
         except Exception as exc:
             if not includes_answer:
-                raise OutputParserException(f"Could not parse LLM output: {text}") from exc
+                raise OutputParserException(
+                    f"Could not parse LLM output: {text}"
+                ) from exc
             return AgentFinish(
                 {"output": text.split(FINAL_ANSWER_ACTION)[-1].strip()}, text
             )
