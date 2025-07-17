@@ -63,3 +63,4 @@ install-poetry:
 	# curl -sSL https://install.python-poetry.org | python3 -
 	# brew install pipx && pipx ensurepath
 	pipx install poetry
+	pipx inject poetry poetry-plugin-up

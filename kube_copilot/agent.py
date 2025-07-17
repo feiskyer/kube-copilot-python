@@ -3,6 +3,7 @@ import os
 import uuid
 
 from langchain_core.tools import tool
+from pydantic import SecretStr
 
 # from langchain_community.callbacks import HumanApprovalCallbackHandler
 from langchain_google_community import GoogleSearchAPIWrapper
@@ -44,9 +45,10 @@ class ReActLLM:
             config={
                 "configurable": {
                     "thread_id": self.thread_id,
-                }
+                },
+                "callbacks": callbacks or [],
             },
-        )  # , callbacks=callbacks)
+        )
         return response.get("messages", [])[-1].content
 
     def stream(self, instructions, callbacks=None):
@@ -57,10 +59,11 @@ class ReActLLM:
             config={
                 "configurable": {
                     "thread_id": self.thread_id,
-                }
+                },
+                "callbacks": callbacks or [],
             },
             stream_mode="values",
-        )  # , callbacks=callbacks)
+        )
 
     def get_graph(
         self, verbose=True, model="gpt-4", additional_tools=None, enable_python=False
@@ -125,24 +128,24 @@ def get_llm_tools(model, additional_tools, enable_python=False):
         os.getenv("AZURE_OPENAI_ENDPOINT") is not None
     ):
         deployment_name = model.replace(".", "")
-
+        api_key = os.getenv("AZURE_OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
         llm = AzureChatOpenAI(
             temperature=0,
-            request_timeout=120,
-            openai_api_key=os.getenv("AZURE_OPENAI_API_KEY")
-            or os.getenv("OPENAI_API_KEY"),
+            timeout=120,
+            api_key=SecretStr(api_key) if api_key else None,
             azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-            deployment_name=deployment_name,
-            openai_api_version="2024-06-01",
+            azure_deployment=deployment_name,
+            api_version="2025-04-01-preview",
         )
     else:
+        api_key = os.getenv("OPENAI_API_KEY")
         llm = ChatOpenAI(
-            model_name=model,
+            model=model,
             temperature=0,
-            request_timeout=120,
-            openai_api_key=os.getenv("OPENAI_API_KEY"),
-            openai_api_base=os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1"),
-            openai_organization=os.getenv("OPENAI_ORGANIZATION", None),
+            timeout=120,
+            api_key=SecretStr(api_key) if api_key else None,
+            base_url=os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1"),
+            organization=os.getenv("OPENAI_ORGANIZATION", None),
         )
 
     tools = [kubectl, trivy]

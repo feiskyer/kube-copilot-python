@@ -11,7 +11,9 @@ EXCEPTION_EMOJI = "⚠️"
 
 
 class CustomLLMThoughtLabeler(LLMThoughtLabeler):
-    def get_tool_label(self, tool: ToolRecord, is_complete: bool) -> str:
+
+    @staticmethod
+    def get_tool_label(tool: ToolRecord, is_complete: bool) -> str:
         """Return the label for an LLMThought that has an associated
         tool.
 
@@ -29,7 +31,7 @@ class CustomLLMThoughtLabeler(LLMThoughtLabeler):
         The markdown label for the thought's container.
 
         """
-        input = tool.input_str.strip()
+        inputs = tool.input_str.strip()
         name = tool.name
         emoji = CHECKMARK_EMOJI if is_complete else THINKING_EMOJI
         if name == "_Exception":
@@ -40,5 +42,5 @@ class CustomLLMThoughtLabeler(LLMThoughtLabeler):
         # if len(tool.input_str) > idx:
         #     input = input + "..."
         # input = input.replace("\n", " ")
-        label = f"{emoji} **{name}:** {input}"
+        label = f"{emoji} **{name}:** {inputs}"
         return label
