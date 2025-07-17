@@ -5,8 +5,8 @@ import sys
 import streamlit as st
 
 from kube_copilot.agent import ReActLLM
-from kube_copilot.st_callable_util import get_streamlit_cb
 from kube_copilot.prompts import get_audit_prompt
+from kube_copilot.st_callable_util import get_streamlit_cb
 from kube_copilot.utils import setup_ai_provider_config
 from langchain_community.callbacks.streamlit import StreamlitCallbackHandler
 

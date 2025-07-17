@@ -1,11 +1,12 @@
-from typing import Callable, TypeVar
 import inspect
+from typing import Callable, TypeVar
 
-from streamlit.runtime.scriptrunner import add_script_run_ctx, get_script_run_ctx
-from streamlit.delta_generator import DeltaGenerator
+from langchain_community.callbacks.streamlit import StreamlitCallbackHandler
 
 from langchain_core.callbacks.base import BaseCallbackHandler
-from langchain_community.callbacks.streamlit import StreamlitCallbackHandler
+from streamlit.delta_generator import DeltaGenerator
+
+from streamlit.runtime.scriptrunner import add_script_run_ctx, get_script_run_ctx
 
 
 # Define a function to wrap and add context to Streamlit's integration with LangGraph
@@ -27,10 +28,12 @@ def get_streamlit_cb(parent_container: DeltaGenerator) -> BaseCallbackHandler:
 
     # Define a type variable for generic type hinting in the decorator, ensuring the original
     # function and wrapped function maintain the same return type.
-    fn_return_type = TypeVar('fn_return_type')
+    fn_return_type = TypeVar("fn_return_type")
 
     # Decorator function to add Streamlit's execution context to a function
-    def add_streamlit_context(fn: Callable[..., fn_return_type]) -> Callable[..., fn_return_type]:
+    def add_streamlit_context(
+        fn: Callable[..., fn_return_type],
+    ) -> Callable[..., fn_return_type]:
         """
         Decorator to ensure that the decorated function runs within the Streamlit execution context.
         This is necessary for interacting with Streamlit components from within callback functions
@@ -69,11 +72,16 @@ def get_streamlit_cb(parent_container: DeltaGenerator) -> BaseCallbackHandler:
     st_cb = StreamlitCallbackHandler(parent_container)
 
     # Iterate over all methods of the StreamlitCallbackHandler instance
-    for method_name, method_func in inspect.getmembers(st_cb, predicate=inspect.ismethod):
-        if method_name.startswith('on_'):  # Identify callback methods that respond to LLM events
+    for method_name, method_func in inspect.getmembers(
+        st_cb, predicate=inspect.ismethod
+    ):
+        if method_name.startswith(
+            "on_"
+        ):  # Identify callback methods that respond to LLM events
             # Wrap each callback method with the Streamlit context setup to prevent session errors
-            setattr(st_cb, method_name,
-                    add_streamlit_context(method_func))  # Replace the method with the wrapped version
+            setattr(
+                st_cb, method_name, add_streamlit_context(method_func)
+            )  # Replace the method with the wrapped version
 
     # Return the fully configured StreamlitCallbackHandler instance, now context-aware and integrated with any ChatLLM
     return st_cb

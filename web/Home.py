@@ -5,8 +5,8 @@ import streamlit as st
 
 from kube_copilot.agent import ReActLLM
 from kube_copilot.kubeconfig import setup_kubeconfig
-from kube_copilot.st_callable_util import get_streamlit_cb
 from kube_copilot.prompts import get_prompt
+from kube_copilot.st_callable_util import get_streamlit_cb
 from kube_copilot.utils import setup_ai_provider_config
 
 # Set up logging
